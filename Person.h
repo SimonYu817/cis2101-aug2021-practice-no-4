@@ -285,8 +285,33 @@ void insert_last_CBL(VSpace *vs, PersonCusorBasedList *list, Person p){
 	
 }
 void insert_at_CBL(VSpace *vs, PersonCusorBasedList *list, Person p, int index);
-void delete_first_CBL(VSpace *vs, PersonCusorBasedList *list);
-void delete_last_CBL(VSpace *vs, PersonCusorBasedList *list);
+void delete_first_CBL(VSpace *vs, PersonCusorBasedList *list){
+	int x;
+	x=*list;
+	*list=vs->data[x].next;
+	vs->avail=x;
+}
+void delete_last_CBL(VSpace *vs, PersonCusorBasedList *list){
+	int x,i,l;
+	for(x=*list;x!=-1;x=vs->data[x].next){
+	l=i;
+	i=x;
+	}
+	vs->data[l].next=vs->data[i].next;
+	vs->data[i].next=vs->avail;
+	vs->avail=i;
+	
+}
+	
+
 void delete_by_sex_CBL(VSpace *vs, PersonCusorBasedList *list, char sex); // all ocurrences
-void display_CBL(VSpace vs, PersonCusorBasedList list);
+void display_CBL(VSpace vs, PersonCusorBasedList list){	
+    int i;
+    printf("List \n{");
+    for(i=list; i != -1; i = vs.data[i].next) {
+        printf("%15d | %15s |%15c |%15s | %15d\n", i, vs.data[i].elem.name,vs.data[i].elem.sex,vs.data[i].elem.city, vs.data[i].next);
+    }
+    printf("}\n");
+
+}
 #endif
