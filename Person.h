@@ -45,8 +45,19 @@ typedef struct {
 } VSpace;
 
 
-Person createPerson(String name, char sex, String city);
-void displayPersonInfo(Person p);
+Person createPerson(String name, char sex, String city) {
+    Person p;
+
+    strcpy(p.name, name);
+    p.sex = sex;
+    strcpy(p.city, city);
+
+    return p;
+}
+
+void displayPersonInfo(Person p) {
+    printf("{%s | %c | %s}\n", p.name, p.sex, p.city);
+}
 
 /* Static Array List*/
 void init_SAL(PersonStaticArrayList *list){
@@ -141,7 +152,17 @@ void insert_last_DAL(PersonDynamicArrayList *list, Person p){
 
     list->data[list->count++] = p;
 }
-void insert_at_DAL(PersonDynamicArrayList *list, Person p, int index);
+void insert_at_DAL(PersonDynamicArrayList *list, Person p, int index){
+	int x;
+	if(list->count!=MAX_LIST){
+		if(index<=list->count){
+			for(x=list->count;x>index;x--){
+				list->data[x]=list->data[x-1];
+			}
+			list->data[x]=p;
+		}
+	}
+}
 void delete_first_DAL(PersonDynamicArrayList *list){
 	    int i;
     if(list->count > 0) {
@@ -192,14 +213,90 @@ void display_DAL(PersonDynamicArrayList list){
  * Doubles the maximum size of the array when full.
  * The Dynamic Array List must also be created in the heap.
  */
-void init_DAL_2(PersonDynamicArrayList **list);
-void insert_first_DAL_2(PersonDynamicArrayList *list, Person p);
-void insert_last_DAL_2(PersonDynamicArrayList *list, Person p);
-void insert_at_DAL_2(PersonDynamicArrayList *list, Person p, int index);
-void delete_first_DAL_2(PersonDynamicArrayList *list);
-void delete_last_DAL_2(PersonDynamicArrayList *list);
-void delete_by_name_DAL_2(PersonDynamicArrayList *list, String name); // last ocurrence
-void display_DAL_2(PersonDynamicArrayList list);
+void init_DAL_2(PersonDynamicArrayList **list){
+	*list = (PersonDynamicArrayList *) malloc(sizeof(PersonDynamicArrayList));
+
+    (*list)->count = 0;
+    (*list)->max = MAX_LIST;
+    (*list)->data = (Person *) malloc(sizeof(Person)*(*list)->max);
+}
+void insert_first_DAL_2(PersonDynamicArrayList *list, Person p){
+	int i;
+    if(list->count >= list->max) {
+        list->max *= 2;
+        list->data = (Person*)realloc(list->data, list->max);
+    }
+
+    for(i = list->count; i > 0; --i) {
+        list->data[i] = list->data[i-1];
+    }
+    list->data[i] = p;
+    list->count++;
+}
+void insert_last_DAL_2(PersonDynamicArrayList *list, Person p){
+	if(list->count >= list->max) {
+        list->max *= 2;
+        list->data = (Person*)realloc(list->data, list->max);
+    }
+
+    list->data[list->count++] = p;
+}
+void insert_at_DAL_2(PersonDynamicArrayList *list, Person p, int index){
+	int x;
+	if(list->count!=MAX_LIST){
+		if(index<=list->count){
+			for(x=list->count;x>index;x--){
+				list->data[x]=list->data[x-1];
+			}
+			list->data[x]=p;
+		}
+	}
+}
+
+void delete_first_DAL_2(PersonDynamicArrayList *list){
+	int i;
+    if(list->count > 0) {
+   
+        for(i=0; i<list->count-1; ++i) {
+            list->data[i] = list->data[i+1];
+        }
+        list->count--;
+    }
+}
+void delete_last_DAL_2(PersonDynamicArrayList *list){
+	if(list->count > 0) {
+        list->count--;
+	}
+}
+void delete_by_name_DAL_2(PersonDynamicArrayList *list, String name){
+
+	int x,i ;
+	for(x=list->count;x>=0;x++){
+		if(strcmp(list->data[x].name,name)==0){
+			i=x;
+			break;
+		}
+	}
+	if(x<list->count) {
+        for(x=i; x<list->count-1; ++x) {
+            list->data[x] = list->data[x+1];
+        }
+        list->count--;
+    }
+
+} // last ocurrence
+void display_DAL_2(PersonDynamicArrayList list){
+
+    int i;
+    printf("{");
+    for(i=0; i<list.count; ++i) {
+         printf("{%s | %c | %s}\n", list.data[i].name, list.data[i].sex, list.data[i].city);
+        if(list.count-1 > i) {
+            printf(", ");
+        }
+    }
+    printf("} Count: %d; Max: %d\n", list.count, list.max);
+}
 
 /* Singly Linked List */
 void insert_first_LL(PersonLinkedList *list, Person p){
@@ -222,7 +319,12 @@ void insert_last_LL(PersonLinkedList *list, Person p){
 	trav->next = temp;
 	*list = trav;
 }
-void insert_after_LL(PersonLinkedList *list, Person p, String name);
+void insert_after_LL(PersonLinkedList *list, Person p, String name){
+	PersonLinkedList *trav;
+	for(trav=list;trav!=NULL;trav = &(*trav)->next){
+	}
+	
+}
 void delete_first_LL(PersonLinkedList *list){
 	PersonLinkedList trav;
 	trav=*list;
@@ -284,7 +386,16 @@ void insert_last_CBL(VSpace *vs, PersonCusorBasedList *list, Person p){
 	vs->data[x].next=avail;
 	
 }
-void insert_at_CBL(VSpace *vs, PersonCusorBasedList *list, Person p, int index);
+void insert_at_CBL(VSpace *vs, PersonCusorBasedList *list, Person p, int index){
+	int x,i;
+	if(*list!=-1){
+		for(x=*list,i=0;x!=-1 && index!=i;x=vs->data[x].next,i++){
+			
+		}
+		vs->data[x].elem=p;
+		
+	}
+}
 void delete_first_CBL(VSpace *vs, PersonCusorBasedList *list){
 	int x;
 	x=*list;

@@ -73,7 +73,7 @@ bool enqueue(CircularArrayQueue *list, Type p){
 bool dequeue(CircularArrayQueue *list){
 	if(!is_empty(*list)){
 		list->front=(list->front+1)%MAX;
-	}
+}
 }
 
 
@@ -88,4 +88,11 @@ Type front(CircularArrayQueue list){
 	return p;
 }
 
+void displayqueue(CircularArrayQueue list){
+	int x;
+	printf("%15s |%15s |%15s \n", "NAME","SEX","CITY");
+	for(x=list.front;x!=(list.rear+1)%MAX;x=(x+1)%MAX){
+         printf("{%15s | %15c | %15s}\n", list.data[x].name, list.data[x].sex, list.data[x].city);
+	}
+}
 #endif
